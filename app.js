@@ -279,7 +279,7 @@ function renderExperiment(data){
     out.innerHTML=`<strong>Local sweep complete</strong><p>You have tested the nearby ratios around ${ratioKey(base)}. Try a wider change or a hero/robot adjustment next.</p>`;
     return;
   }
-  pendingSuggestion=next;
+  pendingSuggestion=next;const eg=$("experimentGuard");if(eg){const latest=scoped.slice().sort((a,b)=>new Date(b.created)-new Date(a.created))[0];const sameSetup=latest&&JSON.stringify(latest.heroes||[])===JSON.stringify([$("hero1").value,$("hero2").value,$("hero3").value].map(x=>x.trim()).filter(Boolean));eg.textContent=latest?(sameSetup?"Experiment guard: hero lineup matches the latest saved test.":"Experiment guard: current hero lineup differs from the latest saved test — ratio results may not be directly comparable."):"Experiment guard: establish a saved baseline before interpreting ratio changes.";}
   const source=scoped.length?"your best average":"the reference baseline";
   out.innerHTML=`<strong>${ratioKey(next)}</strong><p>Next suggested test around ${ratioKey(base)}, using ${source}. Keep heroes, robots, and march capacity unchanged when possible so the ratio comparison stays clean.</p>`;
 }
