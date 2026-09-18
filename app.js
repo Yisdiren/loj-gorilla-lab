@@ -56,9 +56,11 @@ function render(){
   const data=read(),body=$("historyBody"),empty=$("emptyState"); body.innerHTML="";
   empty.style.display=data.length?"none":"block";
   const maxBest=data.length?Math.max(...data.map(x=>x.best)):0;
-  [...data].reverse().forEach(t=>{
+  const filter=$("historyFilter")?.value||"all";
+  const visible=filter==="selected"?data.filter(x=>x.gorilla===$("gorilla").value):data;
+  [...visible].reverse().forEach(t=>{
     const tr=document.createElement("tr"); if(t.best===maxBest)tr.className="row-best";
-    tr.innerHTML=`<td>${t.gorilla}</td><td>${t.ratio.join("/")}</td><td>${fmt(t.best)}</td><td>${fmt(t.average)}</td><td>${t.hits.length}/5</td><td>${t.heroes.join(", ")||"—"}</td><td>${t.robots.join(", ")||"—"}</td><td><button class="delete-btn" data-id="${t.id}">Delete</button></td>`;
+    tr.innerHTML=`<td>${t.gorilla}</td><td>${t.ratio.join("/")}</td><td>${fmt(t.best)}</td><td>${fmt(t.average)}</td><td>${t.hits.length}/5</td><td>${fmt((Math.max(...t.hits)-Math.min(...t.hits))||0)}</td><td>${t.heroes.join(", ")||"—"}</td><td>${t.robots.join(", ")||"—"}</td><td><button class="delete-btn" data-id="${t.id}">Delete</button></td>`;
     body.appendChild(tr);
   });
   document.querySelectorAll(".delete-btn").forEach(b=>b.onclick=()=>{write(read().filter(x=>x.id!==Number(b.dataset.id)));render()});
@@ -75,8 +77,33 @@ function renderBest(data){
     <div><small>Average</small><strong>${fmt(t.average)}</strong></div>
   </div>`;
 }
+$("historyFilter").addEventListener("change",render);
+$("exportData").onclick=()=>{
+  const payload={app:"LoJ Gorilla Lab",version:"0.4",exportedAt:new Date().toISOString(),tests:read()};
+  const blob=new Blob([JSON.stringify(payload,null,2)],{type:"application/json"});
+  const url=URL.createObjectURL(blob),a=document.createElement("a");
+  a.href=url;a.download="loj-gorilla-lab-"+new Date().toISOString().slice(0,10)+".json";a.click();
+  setTimeout(()=>URL.revokeObjectURL(url),1000);
+};
+$("importData").addEventListener("change",async e=>{
+  const file=e.target.files?.[0]; if(!file)return;
+  try{
+    const parsed=JSON.parse(await file.text());
+    const incoming=Array.isArray(parsed)?parsed:parsed.tests;
+    if(!Array.isArray(incoming))throw new Error("No test array found.");
+    const existing=read(),merged=[...existing],seen=new Set(existing.map(x=>String(x.id)));
+    let added=0;
+    for(const t of incoming){
+      if(!t||!t.gorilla||!Array.isArray(t.ratio)||!Array.isArray(t.hits))continue;
+      if(seen.has(String(t.id)))continue;
+      merged.push(t);seen.add(String(t.id));added++;
+    }
+    write(merged);render();alert("Imported "+added+" records.");
+  }catch(err){alert("Could not import that Gorilla Lab JSON file.");}
+  e.target.value="";
+});
 $("clearAll").onclick=()=>{if(confirm("Clear all saved Gorilla Lab tests from this browser?")){localStorage.removeItem(key);render()}};
-$("gorilla").addEventListener("change",()=>{renderBest(read());renderExperiment(read())});\nlet pendingSuggestion=null;
+$("gorilla").addEventListener("change",()=>{renderBest(read());renderExperiment(read());if($("historyFilter").value==="selected")render()});\nlet pendingSuggestion=null;
 function ratioKey(r){return r.join("/")}
 function nearbyRatios(base){
   const [s,b,r]=base;
