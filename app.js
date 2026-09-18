@@ -175,7 +175,7 @@ $("importData").addEventListener("change",async e=>{
   e.target.value="";
 });
 $("clearAll").onclick=()=>{if(confirm("Clear all saved Gorilla Lab tests from this browser?")){localStorage.removeItem(key);render()}};
-$("gorilla").addEventListener("change",()=>{syncRobotFields();renderBest(read());renderExperiment(read());renderTopRatios(read());renderControlledCompare(read());updateStats();if($("historyFilter").value==="selected")render()});
+$("gorilla").addEventListener("change",()=>{syncRobotFields();renderBest(read());renderExperiment(read());renderTopRatios(read());renderControlledCompare(read());renderEvidenceDashboard(read());updateStats();if($("historyFilter").value==="selected")render()});
 function loadProfile(){
   try{
     const p=JSON.parse(localStorage.getItem(profileKey)||"{}");
@@ -214,6 +214,20 @@ function renderControlledCompare(data){
   grade.innerHTML=n===0?'<strong>Control:</strong> No setup variables changed — useful repeatability test.':n===1?'<strong>Clean controlled test:</strong> One detected setup variable changed.':n===2?'<strong>Mixed test:</strong> Two setup variables changed; attribution is less certain.':'<strong>Confounded test:</strong> '+n+' setup variables changed. Test one variable at a time when possible.';
 }
 let leadingRatio=null;
+function renderEvidenceDashboard(data){
+  const box=$("evidenceDashboard");if(!box)return;
+  const g=$("gorilla").value,rows=data.filter(x=>x.gorilla===g),complete=rows.filter(x=>(x.hits||[]).length===5);
+  const ratios=new Set(rows.map(x=>ratioKey(x.ratio))),heroes=new Set(rows.map(x=>JSON.stringify(x.heroes||[])));
+  const robots=robotGorillas.has(g)?new Set(rows.map(x=>JSON.stringify(x.robots||[]))).size:0;
+  const clean=rows.filter(x=>["ratio","hero","robot","war-skill","baseline"].includes(x.changeType)).length;
+  const completion=rows.length?Math.round(complete.length/rows.length*100):0;
+  const most=[...ratios].map(r=>({r,n:rows.filter(x=>ratioKey(x.ratio)===r).length})).sort((a,b)=>b.n-a.n)[0];
+  const bestHit=rows.length?Math.max(...rows.map(x=>x.best||0)):0;
+  const currentRatio=[$("shield").value,$("bomber").value,$("shooter").value].map(Number).join("/");
+  const currentCount=rows.filter(x=>ratioKey(x.ratio)===currentRatio).length;
+  const readiness=complete.length>=15?"Mature":complete.length>=5?"Building":"Early";
+  box.innerHTML='<div><small>Tests</small><strong>'+rows.length+'</strong></div><div><small>Complete</small><strong>'+complete.length+' ('+completion+'%)</strong></div><div><small>Distinct ratios</small><strong>'+ratios.size+'</strong></div><div><small>Hero lineups</small><strong>'+heroes.size+'</strong></div>'+(robotGorillas.has(g)?'<div><small>Robot lineups</small><strong>'+robots+'</strong></div>':'')+'<div><small>Clean tagged tests</small><strong>'+clean+'</strong></div><div><small>Most tested ratio</small><strong>'+(most?most.r+' × '+most.n:'—')+'</strong></div><div><small>Active ratio evidence</small><strong>'+currentCount+' test'+(currentCount===1?'':'s')+'</strong></div><div><small>Best single hit</small><strong>'+fmt(bestHit)+'</strong></div><div><small>Readiness</small><strong>'+readiness+'</strong></div>';
+}
 function renderTopRatios(data){
   const box=$("topRatios"); if(!box)return;
   const selected=$("gorilla").value;
