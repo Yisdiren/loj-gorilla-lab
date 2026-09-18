@@ -73,3 +73,6 @@ footer{text-align:center;color:#65809e;font-size:.78rem;padding-top:6px}
 .ratio-rank small{display:block;color:var(--muted)}
 .ratio-rank strong{display:block;margin:1px 0 6px}
 @media(max-width:700px){.top-ratios{grid-template-columns:1fr}}
+
+.robot-fields{display:contents}
+.robot-disabled-note{grid-column:1/-1;color:var(--muted);font-size:.8rem}
