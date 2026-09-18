@@ -2,7 +2,7 @@
 
 A browser-based testing lab for **Lands of Jail** Gorilla formations.
 
-## Beta v0.37
+## Beta v0.38
 - Select Gorilla type
 - Enter account/server and march capacity
 - Build Shield/Bomber/Shooter ratios
@@ -142,3 +142,6 @@ Created for community testing by **Stiletto**.
 
 ### Beta v0.37 — Capacity guard
 - Experiment Guard detects march-capacity drift from the latest saved test.
+
+### Beta v0.38 — Clean-test summary
+- Adds a count of clean single-variable experiments to dataset coverage.
