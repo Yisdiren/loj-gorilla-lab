@@ -210,6 +210,7 @@ function renderControlledCompare(data){
   const n=changes.length;
   grade.innerHTML=n===0?'<strong>Control:</strong> No setup variables changed — useful repeatability test.':n===1?'<strong>Clean controlled test:</strong> One detected setup variable changed.':n===2?'<strong>Mixed test:</strong> Two setup variables changed; attribution is less certain.':'<strong>Confounded test:</strong> '+n+' setup variables changed. Test one variable at a time when possible.';
 }
+let leadingRatio=null;
 function renderTopRatios(data){
   const box=$("topRatios"); if(!box)return;
   const selected=$("gorilla").value;
@@ -228,8 +229,10 @@ function renderTopRatios(data){
   }).sort((a,b)=>b.average-a.average||b.best-a.best).slice(0,3);
   box.innerHTML=ranked.map((x,i)=>'<div class="ratio-rank"><div class="rank">#'+(i+1)+' • '+x.tests+' test'+(x.tests===1?'':'s')+'</div><div class="ratio">'+x.ratio+'</div><small>Mean test average</small><strong>'+fmt(x.average)+'</strong><small>Best single hit</small><strong>'+fmt(x.best)+'</strong><small>Evidence</small><strong>'+(x.tests>=5?'Strong':x.tests>=3?'Building':'Early')+'</strong></div>').join("");
   const note=$("confidenceNote");if(note){const lead=ranked[0];note.textContent=lead.tests>=5?"Leading ratio has 5+ saved tests. Confidence is stronger, but account changes can still shift results.":"Leading ratio has only "+lead.tests+" saved test"+(lead.tests===1?"":"s")+". Repeat it before treating it as established.";}
+  leadingRatio=ranked[0]?.ratio||null;
   const gap=$("ratioGap");if(gap){if(ranked.length>1){const d=ranked[0].average-ranked[1].average,p=ranked[1].average?d/ranked[1].average*100:0;gap.innerHTML="<strong>#1 vs #2 gap:</strong> "+fmt(d)+" average damage ("+p.toFixed(2)+"%). "+(Math.abs(p)<2?"Very close — more repeat tests are valuable.":"Current leader has a clearer separation.");}else gap.textContent="Test another ratio to create a #1 vs #2 comparison.";}
 }
+$("loadLeader").onclick=()=>{if(!leadingRatio){alert("No leading ratio saved for this Gorilla yet.");return}const parts=leadingRatio.split("/").map(Number);[$("shield").value,$("bomber").value,$("shooter").value]=parts;updateRatio();clearHits();window.scrollTo({top:0,behavior:"smooth"});};
 function renderLeaderboard(data){
   const box=$("leaderboard"); if(!box)return;
   const gorillas=[...$("gorilla").options].map(o=>o.value);
