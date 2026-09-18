@@ -2,7 +2,7 @@
 
 A browser-based testing lab for **Lands of Jail** Gorilla formations.
 
-## Beta v0.21
+## Beta v0.22
 - Select Gorilla type
 - Enter account/server and march capacity
 - Build Shield/Bomber/Shooter ratios
@@ -95,3 +95,6 @@ Created for community testing by **Stiletto**.
 
 - Adds hero-impact callout to controlled comparisons
 - Surfaces average-damage movement when a hero lineup change is detected
+
+- Adds dedicated war-skill impact analysis
+- Shows absolute and percentage average-damage change for tagged war-skill experiments
