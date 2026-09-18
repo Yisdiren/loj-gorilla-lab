@@ -1,5 +1,12 @@
 const $=id=>document.getElementById(id);
 const hitWrap=$("hits");
+const robotGorillas=new Set(["Cyber Gorilla","Gorilla Warlord"]);
+function syncRobotFields(){
+  const enabled=robotGorillas.has($("gorilla").value);
+  $("robotFields").style.display=enabled?"contents":"none";
+  $("supportHeading").textContent=enabled?"Heroes & Robots":"Heroes";
+  if(!enabled){$("robot1").value="";$("robot2").value="";}
+}
 for(let i=1;i<=5;i++){
   const row=document.createElement("label");
   row.className="hit-row";
@@ -67,7 +74,7 @@ function testFromForm(){
   return {
     id:Date.now(),created:new Date().toISOString(),gorilla:$("gorilla").value,server:$("server").value.trim(),player:$("player").value.trim(),
     capacity:Number($("capacity").value)||0,ratio:[s,b,r],heroes:[$("hero1").value,$("hero2").value,$("hero3").value].map(x=>x.trim()).filter(Boolean),
-    robots:[$("robot1").value,$("robot2").value].map(x=>x.trim()).filter(Boolean),hits,best:Math.max(...hits),average:Math.round(total/hits.length),total,notes:$("notes").value.trim()
+    robots:robotGorillas.has($("gorilla").value)?[$("robot1").value,$("robot2").value].map(x=>x.trim()).filter(Boolean):[],hits,best:Math.max(...hits),average:Math.round(total/hits.length),total,notes:$("notes").value.trim()
   };
 }
 $("saveTest").onclick=()=>{
@@ -89,8 +96,11 @@ $("loadBest").onclick=()=>{
   $("hero1").value=t.heroes?.[0]||"";
   $("hero2").value=t.heroes?.[1]||"";
   $("hero3").value=t.heroes?.[2]||"";
-  $("robot1").value=t.robots?.[0]||"";
-  $("robot2").value=t.robots?.[1]||"";
+  syncRobotFields();
+  if(robotGorillas.has(selected)){
+    $("robot1").value=t.robots?.[0]||"";
+    $("robot2").value=t.robots?.[1]||"";
+  }
   if(t.capacity)$("capacity").value=t.capacity;
   updateRatio();clearHits();saveProfile();
 };
@@ -164,7 +174,7 @@ $("importData").addEventListener("change",async e=>{
   e.target.value="";
 });
 $("clearAll").onclick=()=>{if(confirm("Clear all saved Gorilla Lab tests from this browser?")){localStorage.removeItem(key);render()}};
-$("gorilla").addEventListener("change",()=>{renderBest(read());renderExperiment(read());renderTopRatios(read());updateStats();if($("historyFilter").value==="selected")render()});
+$("gorilla").addEventListener("change",()=>{syncRobotFields();renderBest(read());renderExperiment(read());renderTopRatios(read());updateStats();if($("historyFilter").value==="selected")render()});
 function loadProfile(){
   try{
     const p=JSON.parse(localStorage.getItem(profileKey)||"{}");
@@ -245,4 +255,4 @@ $("applySuggestion").onclick=()=>{
   updateRatio();
   window.scrollTo({top:0,behavior:"smooth"});
 };
-loadProfile();updateRatio();updateStats();render();
+loadProfile();syncRobotFields();updateRatio();updateStats();render();
