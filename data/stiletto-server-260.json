@@ -1,0 +1,13 @@
+{
+  "profile":{"player":"Stiletto","server":"260","marchCapacity":188662},
+  "gorillas":{
+    "Space Gorilla":{"bestKnownRatio":[0,4,96],"robotsUsed":false},
+    "Wise Gorilla":{"bestKnownRatio":[0,9,91],"robotsUsed":false},
+    "Primal Gorilla":{"bestKnownRatio":[0,29,71],"testedRatios":[[0,30,70],[0,29,71]],"robotsUsed":false},
+    "Cyber Gorilla":{"bestKnownRatio":[0,10,90],"robotsUsed":true},
+    "Armed Gorilla":{"bestKnownRatio":[0,4,96],"knownResults":[{"ratio":[0,4,96],"damage":349348449},{"ratio":[0,2,98],"damage":322504797}],"robotsUsed":false},
+    "Gorilla Warlord":{"historicalRatio":[0,35,65],"testedRatios":[[0,9,91],[0,35,65],[0,34,66],[0,30,70],[0,33,67]],"robotsUsed":true}
+  },
+  "accountTestingNotes":{"bestRobots":["Maru","Cat"],"robotLevels":5,"musashimaruCurrentLevel":98,"marcus":{"type":"Shieldbearer","notes":"Tried in Team 2; war skills may need upgrading."}},
+  "otherKnownGorillaResult":{"gorilla":"Treasure Gorilla","damage":350591041}
+}
