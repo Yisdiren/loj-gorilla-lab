@@ -238,6 +238,8 @@ function renderLeaderboard(data){
     const bestHit=[...rows].sort((a,b)=>b.best-a.best)[0];
     return '<div class="leader-card"><h3>'+g+'</h3><small>Best average</small><strong>'+fmt(bestAvg.average)+' • '+bestAvg.ratio.join("/")+'</strong><small>Best single hit</small><strong>'+fmt(bestHit.best)+' • '+bestHit.ratio.join("/")+'</strong></div>';
   }).join("");
+  const tested=gorillas.filter(g=>data.some(x=>x.gorilla===g)).length,total=data.length,complete=data.filter(x=>(x.hits||[]).length===5).length;
+  const cov=$("coverageSummary");if(cov)cov.innerHTML="<strong>"+tested+"/6 Gorillas tested</strong> • "+total+" total experiments • "+complete+" complete five-hit sets.";
 }\nlet pendingSuggestion=null;const skippedKey="loj-gorilla-lab-skipped-v1";function skipped(){try{return JSON.parse(localStorage.getItem(skippedKey)||"{}")}catch{return {}}}function saveSkipped(x){localStorage.setItem(skippedKey,JSON.stringify(x))}
 function ratioKey(r){return r.join("/")}
 function nearbyRatios(base){
