@@ -13,6 +13,27 @@ function updateStats(){
   $("best").textContent=best?fmt(best):"—";
   $("total").textContent=total?fmt(total):"—";
   $("average").textContent=a.length?fmt(Math.round(total/a.length)):"—";
+  renderQuality(a);
+}
+function renderQuality(a){
+  const box=$("testQuality");
+  if(!box)return;
+  if(!a.length){box.className="quality-box";box.textContent="Enter all five hits for a full-quality test.";return}
+  const avg=a.reduce((x,y)=>x+y,0)/a.length;
+  const spread=Math.max(...a)-Math.min(...a);
+  const spreadPct=avg?spread/avg*100:0;
+  const selected=$("gorilla").value;
+  const prior=read().filter(x=>x.gorilla===selected).sort((x,y)=>y.average-x.average)[0];
+  let comparison="No prior personal baseline yet.";
+  if(prior){
+    const delta=((avg-prior.average)/prior.average)*100;
+    comparison="Vs personal best average: "+(delta>=0?"+":"")+delta.toFixed(2)+"%.";
+  }
+  let consistency="High consistency";
+  if(spreadPct>20) consistency="High variance";
+  else if(spreadPct>10) consistency="Moderate variance";
+  box.className="quality-box "+(a.length===5&&spreadPct<=10?"quality-good":"quality-warn");
+  box.innerHTML="<strong>"+a.length+"/5 hits</strong> • "+consistency+" • spread "+fmt(spread)+" ("+spreadPct.toFixed(1)+"%).<br>"+comparison;
 }
 function updateRatio(){
   const s=Number($("shield").value)||0,b=Number($("bomber").value)||0,r=Number($("shooter").value)||0,total=s+b+r;
@@ -51,7 +72,7 @@ function testFromForm(){
 }
 $("saveTest").onclick=()=>{
   const t=testFromForm(); if(t.error){alert(t.error);return}
-  const data=read(); data.push(t); write(data); render();
+  const data=read(); data.push(t); write(data); render(); updateStats();
 };
 function render(){
   const data=read(),body=$("historyBody"),empty=$("emptyState"); body.innerHTML="";
@@ -104,7 +125,7 @@ $("importData").addEventListener("change",async e=>{
   e.target.value="";
 });
 $("clearAll").onclick=()=>{if(confirm("Clear all saved Gorilla Lab tests from this browser?")){localStorage.removeItem(key);render()}};
-$("gorilla").addEventListener("change",()=>{renderBest(read());renderExperiment(read());if($("historyFilter").value==="selected")render()});
+$("gorilla").addEventListener("change",()=>{renderBest(read());renderExperiment(read());updateStats();if($("historyFilter").value==="selected")render()});
 function loadProfile(){
   try{
     const p=JSON.parse(localStorage.getItem(profileKey)||"{}");
