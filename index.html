@@ -15,7 +15,7 @@
         <h1>LoJ Gorilla Lab</h1>
         <p class="subtitle">Test formations. Log all five hits. Find what actually works for your account.</p>
       </div>
-      <div class="badge">Beta v0.9</div>
+      <div class="badge">Beta v0.10</div>
     </header>
 
     <section class="grid two">
@@ -79,9 +79,13 @@
           <div><span>Total</span><strong id="total">—</strong></div>
         </div>
         <div id="testQuality" class="quality-box">Enter all five hits for a full-quality test.</div>
-        <label class="notes">Notes
-          <textarea id="notes" rows="4" placeholder="War skill upgrades, hero swaps, robot changes, observations..."></textarea>
-        </label>
+        <div class="change-grid">
+          <label>What changed?
+            <select id="changeType"><option value="ratio">Ratio only</option><option value="hero">Hero change</option><option value="robot">Robot change</option><option value="war-skill">War-skill upgrade</option><option value="mixed">Multiple changes</option><option value="baseline">Baseline / control</option></select>
+          </label>
+          <label>Change details<input id="changeDetails" placeholder="e.g. Marcus war skill upgraded" /></label>
+        </div>
+        <label class="notes">Notes<textarea id="notes" rows="4" placeholder="Observations from this five-hit test..."></textarea></label>
         <div class="test-actions">
           <button id="saveTest" class="primary">Save Test</button>
           <button id="newTest" class="ghost">New 5-Hit Set</button>
@@ -115,7 +119,7 @@
               <th>Ratio</th>
               <th>Best</th>
               <th>Average</th>
-              <th>Hits</th><th>Spread</th>
+              <th>Hits</th><th>Spread</th><th>Change</th>
               <th>Heroes</th>
               <th>Robots</th>
               <th></th>
