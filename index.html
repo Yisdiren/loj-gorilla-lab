@@ -15,7 +15,7 @@
         <h1>LoJ Gorilla Lab</h1>
         <p class="subtitle">Test formations. Log all five hits. Find what actually works for your account.</p>
       </div>
-      <div class="badge">Beta v0.6</div>
+      <div class="badge">Beta v0.7</div>
     </header>
 
     <section class="grid two">
@@ -80,7 +80,11 @@
         <label class="notes">Notes
           <textarea id="notes" rows="4" placeholder="War skill upgrades, hero swaps, robot changes, observations..."></textarea>
         </label>
-        <button id="saveTest" class="primary">Save Test</button>
+        <div class="test-actions">
+          <button id="saveTest" class="primary">Save Test</button>
+          <button id="newTest" class="ghost">New 5-Hit Set</button>
+          <button id="loadBest" class="ghost">Load Personal Best</button>
+        </div>
       </article>
     </section>
 
@@ -95,7 +99,8 @@
             <option value="all">All Gorillas</option>
             <option value="selected">Selected Gorilla</option>
           </select>
-          <button id="exportData" class="ghost">Export Data</button>
+          <button id="exportData" class="ghost">Export JSON</button>
+          <button id="exportCsv" class="ghost">Export CSV</button>
           <label class="import-label ghost">Import Data<input id="importData" type="file" accept="application/json,.json" hidden /></label>
           <button id="clearAll" class="danger ghost">Clear History</button>
         </div>
