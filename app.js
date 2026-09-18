@@ -173,8 +173,20 @@ $("importData").addEventListener("change",async e=>{
   const file=e.target.files?.[0]; if(!file)return;
   try{
     const parsed=JSON.parse(await file.text());
-    const incoming=Array.isArray(parsed)?parsed:parsed.tests;
-    if(!Array.isArray(incoming))throw new Error("No test array found.");
+    let incoming=Array.isArray(parsed)?parsed:parsed.tests;
+    if(!Array.isArray(incoming)&&parsed.gorillas){
+      incoming=[];
+      const player=parsed.profile?.player||"Stiletto",server=String(parsed.profile?.server||"260"),capacity=Number(parsed.profile?.marchCapacity||188662);
+      for(const [gorilla,g] of Object.entries(parsed.gorillas)){
+        const known=Array.isArray(g.knownResults)?g.knownResults:[];
+        for(const x of known)incoming.push({id:"import-"+gorilla.toLowerCase().replace(/[^a-z0-9]+/g,"-")+"-"+x.ratio.join("-")+"-"+x.damage,gorilla,server,player,capacity,ratio:x.ratio,heroes:[],robots:[],hits:[x.damage],best:x.damage,average:x.damage,total:x.damage,changeType:"baseline",changeDetails:"Imported historical confirmed hit",notes:g.notes||"Historical Stiletto Gorilla result"});
+      }
+      if(parsed.profile){
+        $("server").value=server;$("player").value=player;$("capacity").value=String(capacity);saveProfile();
+      }
+      localStorage.setItem("loj-gorilla-lab-reference-import-v1",JSON.stringify(parsed.gorillas));
+    }
+    if(!Array.isArray(incoming))throw new Error("No supported Gorilla Lab data found.");
     const existing=read(),merged=[...existing],seen=new Set(existing.map(x=>String(x.id)));
     let added=0;
     for(const t of incoming){
@@ -182,7 +194,7 @@ $("importData").addEventListener("change",async e=>{
       if(seen.has(String(t.id)))continue;
       merged.push(t);seen.add(String(t.id));added++;
     }
-    write(merged);render();alert("Imported "+added+" records.");
+    write(merged);render();alert("Import complete: "+added+" confirmed damage record"+(added===1?"":"s")+" added. Profile/reference data was also loaded when present.");
   }catch(err){alert("Could not import that Gorilla Lab JSON file.");}
   e.target.value="";
 });
