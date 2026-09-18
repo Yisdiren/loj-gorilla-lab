@@ -2,7 +2,7 @@
 
 A browser-based testing lab for **Lands of Jail** Gorilla formations.
 
-## Beta v0.32
+## Beta v0.33
 - Select Gorilla type
 - Enter account/server and march capacity
 - Build Shield/Bomber/Shooter ratios
@@ -127,3 +127,6 @@ Created for community testing by **Stiletto**.
 
 ### Beta v0.32 — Best-hit delta
 - Shows current best-hit difference from the selected Gorilla personal record.
+
+### Beta v0.33 — Average delta
+- Shows current average difference from the selected Gorilla personal record.
