@@ -2,7 +2,7 @@
 
 A browser-based testing lab for **Lands of Jail** Gorilla formations.
 
-## Beta v0.1
+## Beta v0.2
 - Select Gorilla type
 - Enter account/server and march capacity
 - Build Shield/Bomber/Shooter ratios
@@ -11,7 +11,7 @@ A browser-based testing lab for **Lands of Jail** Gorilla formations.
 - Log up to five damage hits
 - Automatic best, average, and total damage
 - Save experiment history in browser local storage
-- Track the highest recorded setup
+- Track the highest recorded setup for each Gorilla\n- Show Gorilla-specific reference ratios from prior Stiletto testing when no account result exists\n- Reference ratios are explicitly treated as starting points, not universal recommendations
 
 This project is designed to stay account-specific: the goal is to help each player discover what performs best on their own account rather than assume one universal formation.
 
