@@ -76,4 +76,39 @@ function renderBest(data){
   </div>`;
 }
 $("clearAll").onclick=()=>{if(confirm("Clear all saved Gorilla Lab tests from this browser?")){localStorage.removeItem(key);render()}};
-$("gorilla").addEventListener("change",()=>renderBest(read()));\nupdateRatio();updateStats();render();
+$("gorilla").addEventListener("change",()=>{renderBest(read());renderExperiment(read())});\nlet pendingSuggestion=null;
+function ratioKey(r){return r.join("/")}
+function nearbyRatios(base){
+  const [s,b,r]=base;
+  const candidates=[];
+  for(const step of [1,2,3,5]){
+    if(b-step>=0) candidates.push([s,b-step,r+step]);
+    if(r-step>=0) candidates.push([s,b+step,r-step]);
+  }
+  return candidates.filter(x=>x.every(v=>v>=0&&v<=100)&&x.reduce((a,b)=>a+b,0)===100);
+}
+function renderExperiment(data){
+  const out=$("experimentSuggestion"), selected=$("gorilla").value;
+  const scoped=data.filter(x=>x.gorilla===selected);
+  const tested=new Set(scoped.map(x=>ratioKey(x.ratio)));
+  let base=null;
+  if(scoped.length) base=[...scoped].sort((a,b)=>b.average-a.average||b.best-a.best)[0].ratio;
+  else if(referenceBaselines[selected]) base=referenceBaselines[selected].ratio;
+  if(!base){pendingSuggestion=null;out.textContent="No baseline available yet.";return}
+  const next=nearbyRatios(base).find(r=>!tested.has(ratioKey(r)));
+  if(!next){
+    pendingSuggestion=null;
+    out.innerHTML=`<strong>Local sweep complete</strong><p>You have tested the nearby ratios around ${ratioKey(base)}. Try a wider change or a hero/robot adjustment next.</p>`;
+    return;
+  }
+  pendingSuggestion=next;
+  const source=scoped.length?"your best average":"the reference baseline";
+  out.innerHTML=`<strong>${ratioKey(next)}</strong><p>Next suggested test around ${ratioKey(base)}, using ${source}. Keep heroes, robots, and march capacity unchanged when possible so the ratio comparison stays clean.</p>`;
+}
+$("applySuggestion").onclick=()=>{
+  if(!pendingSuggestion)return;
+  [$("shield").value,$("bomber").value,$("shooter").value]=pendingSuggestion;
+  updateRatio();
+  window.scrollTo({top:0,behavior:"smooth"});
+};
+updateRatio();updateStats();render();
