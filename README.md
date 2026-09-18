@@ -2,7 +2,7 @@
 
 A browser-based testing lab for **Lands of Jail** Gorilla formations.
 
-## Beta v0.16
+## Beta v0.17
 - Select Gorilla type
 - Enter account/server and march capacity
 - Build Shield/Bomber/Shooter ratios
@@ -80,3 +80,6 @@ Created for community testing by **Stiletto**.
 - Adds a testing-priority recommendation based on evidence gaps
 - Prioritizes the Gorilla with the fewest complete five-hit sets
 - Helps spread testing across all six Gorilla events instead of over-testing one event
+
+- Adds repeatability analysis for repeated tests of the same ratio
+- Shows the range between saved test averages and its percentage of the mean
