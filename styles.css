@@ -112,3 +112,5 @@ footer{text-align:center;color:#65809e;font-size:.78rem;padding-top:6px}
 .sweep-status{margin-top:8px;color:var(--muted);font-size:.78rem}
 
 .experiment-guard{margin-top:8px;padding:9px;border-radius:10px;border:1px solid var(--line);font-size:.78rem;color:var(--muted)}
+
+.evidence-dashboard{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}.evidence-dashboard>div{background:#081321;border:1px solid var(--line);border-radius:11px;padding:10px}.evidence-dashboard small{display:block;color:var(--muted)}.evidence-dashboard strong{display:block;margin-top:3px}@media(max-width:800px){.evidence-dashboard{grid-template-columns:1fr 1fr}}
