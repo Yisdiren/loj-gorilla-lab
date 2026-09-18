@@ -74,6 +74,26 @@ $("saveTest").onclick=()=>{
   const t=testFromForm(); if(t.error){alert(t.error);return}
   const data=read(); data.push(t); write(data); render(); updateStats();
 };
+function clearHits(){
+  [1,2,3,4,5].forEach(i=>$("hit"+i).value="");
+  $("notes").value="";
+  updateStats();
+}
+$("newTest").onclick=clearHits;
+$("loadBest").onclick=()=>{
+  const selected=$("gorilla").value;
+  const rows=read().filter(x=>x.gorilla===selected);
+  if(!rows.length){alert("No personal best saved for this Gorilla yet.");return}
+  const t=[...rows].sort((a,b)=>b.average-a.average||b.best-a.best)[0];
+  [$("shield").value,$("bomber").value,$("shooter").value]=t.ratio;
+  $("hero1").value=t.heroes?.[0]||"";
+  $("hero2").value=t.heroes?.[1]||"";
+  $("hero3").value=t.heroes?.[2]||"";
+  $("robot1").value=t.robots?.[0]||"";
+  $("robot2").value=t.robots?.[1]||"";
+  if(t.capacity)$("capacity").value=t.capacity;
+  updateRatio();clearHits();saveProfile();
+};
 function render(){
   const data=read(),body=$("historyBody"),empty=$("emptyState"); body.innerHTML="";
   empty.style.display=data.length?"none":"block";
@@ -105,6 +125,25 @@ $("exportData").onclick=()=>{
   const blob=new Blob([JSON.stringify(payload,null,2)],{type:"application/json"});
   const url=URL.createObjectURL(blob),a=document.createElement("a");
   a.href=url;a.download="loj-gorilla-lab-"+new Date().toISOString().slice(0,10)+".json";a.click();
+  setTimeout(()=>URL.revokeObjectURL(url),1000);
+};
+$("exportCsv").onclick=()=>{
+  const rows=read();
+  const esc=v=>'"'+String(v??"").replaceAll('"','""')+'"';
+  const header=["Date","Gorilla","Server","Player","Capacity","Shield","Bomber","Shooter","Hit1","Hit2","Hit3","Hit4","Hit5","Best","Average","Total","Heroes","Robots","Notes"];
+  const lines=[header.map(esc).join(",")];
+  for(const t of rows){
+    const line=[
+      t.created,t.gorilla,t.server,t.player,t.capacity,
+      t.ratio?.[0],t.ratio?.[1],t.ratio?.[2],
+      ...(t.hits||[]),...Array(Math.max(0,5-(t.hits||[]).length)).fill(""),
+      t.best,t.average,t.total,(t.heroes||[]).join(" | "),(t.robots||[]).join(" | "),t.notes
+    ];
+    lines.push(line.map(esc).join(","));
+  }
+  const blob=new Blob([lines.join("\n")],{type:"text/csv"});
+  const url=URL.createObjectURL(blob),a=document.createElement("a");
+  a.href=url;a.download="loj-gorilla-lab-"+new Date().toISOString().slice(0,10)+".csv";a.click();
   setTimeout(()=>URL.revokeObjectURL(url),1000);
 };
 $("importData").addEventListener("change",async e=>{
