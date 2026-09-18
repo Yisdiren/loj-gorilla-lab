@@ -273,7 +273,7 @@ function renderExperiment(data){
   if(scoped.length) base=[...scoped].sort((a,b)=>b.average-a.average||b.best-a.best)[0].ratio;
   else if(referenceBaselines[selected]) base=referenceBaselines[selected].ratio;
   if(!base){pendingSuggestion=null;out.textContent="No baseline available yet.";return}
-  const next=nearbyRatios(base).find(r=>!tested.has(ratioKey(r)));
+  const candidates=nearbyRatios(base),next=candidates.find(r=>!tested.has(ratioKey(r)));const ss=$("sweepStatus");if(ss){const done=candidates.filter(r=>tested.has(ratioKey(r))).length;ss.textContent="Nearby sweep: "+done+"/"+candidates.length+" ratios tested or skipped around "+ratioKey(base)+".";}
   if(!next){
     pendingSuggestion=null;
     out.innerHTML=`<strong>Local sweep complete</strong><p>You have tested the nearby ratios around ${ratioKey(base)}. Try a wider change or a hero/robot adjustment next.</p>`;
