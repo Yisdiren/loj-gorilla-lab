@@ -65,3 +65,11 @@ footer{text-align:center;color:#65809e;font-size:.78rem;padding-top:6px}
 .test-actions{display:grid;grid-template-columns:1.35fr 1fr 1fr;gap:8px;margin-top:14px}
 .test-actions .primary{margin-top:0}
 @media(max-width:620px){.test-actions{grid-template-columns:1fr}}
+
+.top-ratios{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.ratio-rank{background:#081321;border:1px solid var(--line);border-radius:13px;padding:14px}
+.ratio-rank .rank{font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+.ratio-rank .ratio{font-size:1.35rem;font-weight:900;color:var(--accent);margin:4px 0 8px}
+.ratio-rank small{display:block;color:var(--muted)}
+.ratio-rank strong{display:block;margin:1px 0 6px}
+@media(max-width:700px){.top-ratios{grid-template-columns:1fr}}
