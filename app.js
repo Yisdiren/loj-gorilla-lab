@@ -7,8 +7,10 @@ const stilettoGorillaData=[
  {gorilla:"Gorilla Warlord",ratio:[0,35,65],tested:[[0,9,91],[0,35,65],[0,34,66],[0,30,70],[0,33,67]],note:"Robot-eligible; historical reference plus recent ratio sweep",robots:true}
 ];
 function renderStilettoSeed(){
- const box=$("stilettoSeed");if(!box)return;
- box.innerHTML=stilettoGorillaData.map(x=>'<div class="seed-item"><small>'+x.gorilla+'</small><strong>'+ratioKey(x.ratio)+'</strong>'+(x.best?'<div>'+fmt(x.best)+' best hit</div>':'')+(x.alternate?'<div class="record">Comparison '+ratioKey(x.alternate.ratio)+' • '+fmt(x.alternate.best)+'</div>':'')+(x.tested?'<div class="record">Tested: '+x.tested.map(r=>ratioKey(r)).join(", ")+'</div>':'')+'<div class="record">'+(x.robots?"Robots: Cyber/Warlord eligible":"Robots: not used")+'</div><div class="record">'+x.note+'</div></div>').join("");
+ const box=document.getElementById("stilettoSeed");if(!box)return;
+ const rk=r=>r.join("/");
+ const nf=n=>Number(n||0).toLocaleString();
+ box.innerHTML=stilettoGorillaData.map(x=>'<div class="seed-item"><small>'+x.gorilla+'</small><strong>'+rk(x.ratio)+'</strong>'+(x.best?'<div>'+nf(x.best)+' best hit</div>':'')+(x.alternate?'<div class="record">Comparison '+rk(x.alternate.ratio)+' • '+nf(x.alternate.best)+'</div>':'')+(x.tested?'<div class="record">Tested: '+x.tested.map(r=>rk(r)).join(", ")+'</div>':'')+'<div class="record">'+(x.robots?"Robots: Cyber/Warlord eligible":"Robots: not used")+'</div><div class="record">'+x.note+'</div></div>').join("");
 }
 const $=id=>document.getElementById(id);
 const hitWrap=$("hits");
