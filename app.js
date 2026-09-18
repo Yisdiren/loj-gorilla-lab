@@ -238,7 +238,7 @@ function renderLeaderboard(data){
     const bestHit=[...rows].sort((a,b)=>b.best-a.best)[0];
     return '<div class="leader-card"><h3>'+g+'</h3><small>Best average</small><strong>'+fmt(bestAvg.average)+' • '+bestAvg.ratio.join("/")+'</strong><small>Best single hit</small><strong>'+fmt(bestHit.best)+' • '+bestHit.ratio.join("/")+'</strong></div>';
   }).join("");
-}\nlet pendingSuggestion=null;
+}\nlet pendingSuggestion=null;const skippedKey="loj-gorilla-lab-skipped-v1";function skipped(){try{return JSON.parse(localStorage.getItem(skippedKey)||"{}")}catch{return {}}}function saveSkipped(x){localStorage.setItem(skippedKey,JSON.stringify(x))}
 function ratioKey(r){return r.join("/")}
 function nearbyRatios(base){
   const [s,b,r]=base;
@@ -252,7 +252,7 @@ function nearbyRatios(base){
 function renderExperiment(data){
   const out=$("experimentSuggestion"), selected=$("gorilla").value;
   const scoped=data.filter(x=>x.gorilla===selected);
-  const tested=new Set(scoped.map(x=>ratioKey(x.ratio)));
+  const tested=new Set(scoped.map(x=>ratioKey(x.ratio)));const sk=skipped();(sk[selected]||[]).forEach(x=>tested.add(x));
   let base=null;
   if(scoped.length) base=[...scoped].sort((a,b)=>b.average-a.average||b.best-a.best)[0].ratio;
   else if(referenceBaselines[selected]) base=referenceBaselines[selected].ratio;
@@ -267,6 +267,8 @@ function renderExperiment(data){
   const source=scoped.length?"your best average":"the reference baseline";
   out.innerHTML=`<strong>${ratioKey(next)}</strong><p>Next suggested test around ${ratioKey(base)}, using ${source}. Keep heroes, robots, and march capacity unchanged when possible so the ratio comparison stays clean.</p>`;
 }
+$("skipSuggestion").onclick=()=>{if(!pendingSuggestion)return;const s=skipped(),g=$("gorilla").value;s[g]=[...(s[g]||[]),ratioKey(pendingSuggestion)];saveSkipped(s);renderExperiment(read())};
+$("resetSweep").onclick=()=>{const s=skipped();delete s[$("gorilla").value];saveSkipped(s);renderExperiment(read())};
 $("applySuggestion").onclick=()=>{
   if(!pendingSuggestion)return;
   [$("shield").value,$("bomber").value,$("shooter").value]=pendingSuggestion;
