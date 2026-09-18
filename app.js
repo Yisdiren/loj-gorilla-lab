@@ -74,7 +74,7 @@ function testFromForm(){
   return {
     id:Date.now(),created:new Date().toISOString(),gorilla:$("gorilla").value,server:$("server").value.trim(),player:$("player").value.trim(),
     capacity:Number($("capacity").value)||0,ratio:[s,b,r],heroes:[$("hero1").value,$("hero2").value,$("hero3").value].map(x=>x.trim()).filter(Boolean),
-    robots:robotGorillas.has($("gorilla").value)?[$("robot1").value,$("robot2").value].map(x=>x.trim()).filter(Boolean):[],hits,best:Math.max(...hits),average:Math.round(total/hits.length),total,notes:$("notes").value.trim()
+    robots:robotGorillas.has($("gorilla").value)?[$("robot1").value,$("robot2").value].map(x=>x.trim()).filter(Boolean):[],changeType:$("changeType").value,changeDetails:$("changeDetails").value.trim(),hits,best:Math.max(...hits),average:Math.round(total/hits.length),total,notes:$("notes").value.trim()
   };
 }
 $("saveTest").onclick=()=>{
@@ -84,6 +84,7 @@ $("saveTest").onclick=()=>{
 function clearHits(){
   [1,2,3,4,5].forEach(i=>$("hit"+i).value="");
   $("notes").value="";
+  $("changeDetails").value="";
   updateStats();
 }
 $("newTest").onclick=clearHits;
@@ -112,7 +113,7 @@ function render(){
   const visible=filter==="selected"?data.filter(x=>x.gorilla===$("gorilla").value):data;
   [...visible].reverse().forEach(t=>{
     const tr=document.createElement("tr"); if(t.best===maxBest)tr.className="row-best";
-    tr.innerHTML=`<td>${t.gorilla}</td><td>${t.ratio.join("/")}</td><td>${fmt(t.best)}</td><td>${fmt(t.average)}</td><td>${t.hits.length}/5</td><td>${fmt((Math.max(...t.hits)-Math.min(...t.hits))||0)}</td><td>${t.heroes.join(", ")||"—"}</td><td>${t.robots.join(", ")||"—"}</td><td><button class="delete-btn" data-id="${t.id}">Delete</button></td>`;
+    tr.innerHTML=`<td>${t.gorilla}</td><td>${t.ratio.join("/")}</td><td>${fmt(t.best)}</td><td>${fmt(t.average)}</td><td>${t.hits.length}/5</td><td>${fmt((Math.max(...t.hits)-Math.min(...t.hits))||0)}</td><td><span class="change-tag">${t.changeType||"legacy"}</span></td><td>${t.heroes.join(", ")||"—"}</td><td>${t.robots.join(", ")||"—"}</td><td><button class="delete-btn" data-id="${t.id}">Delete</button></td>`;
     body.appendChild(tr);
   });
   document.querySelectorAll(".delete-btn").forEach(b=>b.onclick=()=>{write(read().filter(x=>x.id!==Number(b.dataset.id)));render()});
@@ -140,14 +141,14 @@ $("exportData").onclick=()=>{
 $("exportCsv").onclick=()=>{
   const rows=read();
   const esc=v=>'"'+String(v??"").replaceAll('"','""')+'"';
-  const header=["Date","Gorilla","Server","Player","Capacity","Shield","Bomber","Shooter","Hit1","Hit2","Hit3","Hit4","Hit5","Best","Average","Total","Heroes","Robots","Notes"];
+  const header=["Date","Gorilla","Server","Player","Capacity","Shield","Bomber","Shooter","Hit1","Hit2","Hit3","Hit4","Hit5","Best","Average","Total","ChangeType","ChangeDetails","Heroes","Robots","Notes"];
   const lines=[header.map(esc).join(",")];
   for(const t of rows){
     const line=[
       t.created,t.gorilla,t.server,t.player,t.capacity,
       t.ratio?.[0],t.ratio?.[1],t.ratio?.[2],
       ...(t.hits||[]),...Array(Math.max(0,5-(t.hits||[]).length)).fill(""),
-      t.best,t.average,t.total,(t.heroes||[]).join(" | "),(t.robots||[]).join(" | "),t.notes
+      t.best,t.average,t.total,t.changeType||"",t.changeDetails||"",(t.heroes||[]).join(" | "),(t.robots||[]).join(" | "),t.notes
     ];
     lines.push(line.map(esc).join(","));
   }
