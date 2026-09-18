@@ -27,6 +27,7 @@ function updateRatio(){
 [1,2,3,4,5].forEach(i=>$("hit"+i).addEventListener("input",updateStats));
 
 const key="loj-gorilla-lab-tests-v1";
+const profileKey="loj-gorilla-lab-profile-v1";
 const referenceBaselines={
   "Space Gorilla":{ratio:[0,4,96],label:"Stiletto test reference"},
   "Wise Gorilla":{ratio:[0,9,91],label:"Stiletto test reference"},
@@ -103,7 +104,35 @@ $("importData").addEventListener("change",async e=>{
   e.target.value="";
 });
 $("clearAll").onclick=()=>{if(confirm("Clear all saved Gorilla Lab tests from this browser?")){localStorage.removeItem(key);render()}};
-$("gorilla").addEventListener("change",()=>{renderBest(read());renderExperiment(read());if($("historyFilter").value==="selected")render()});\nlet pendingSuggestion=null;
+$("gorilla").addEventListener("change",()=>{renderBest(read());renderExperiment(read());if($("historyFilter").value==="selected")render()});
+function loadProfile(){
+  try{
+    const p=JSON.parse(localStorage.getItem(profileKey)||"{}");
+    if(p.server)$("server").value=p.server;
+    if(p.player)$("player").value=p.player;
+    if(p.capacity)$("capacity").value=p.capacity;
+    updateRatio();
+  }catch{}
+}
+function saveProfile(){
+  localStorage.setItem(profileKey,JSON.stringify({
+    server:$("server").value.trim(),
+    player:$("player").value.trim(),
+    capacity:Number($("capacity").value)||0
+  }));
+}
+["server","player","capacity"].forEach(id=>$(id).addEventListener("change",saveProfile));
+function renderLeaderboard(data){
+  const box=$("leaderboard"); if(!box)return;
+  const gorillas=[...$("gorilla").options].map(o=>o.value);
+  box.innerHTML=gorillas.map(g=>{
+    const rows=data.filter(x=>x.gorilla===g);
+    if(!rows.length)return '<div class="leader-card"><h3>'+g+'</h3><small>No saved tests yet</small></div>';
+    const bestAvg=[...rows].sort((a,b)=>b.average-a.average)[0];
+    const bestHit=[...rows].sort((a,b)=>b.best-a.best)[0];
+    return '<div class="leader-card"><h3>'+g+'</h3><small>Best average</small><strong>'+fmt(bestAvg.average)+' • '+bestAvg.ratio.join("/")+'</strong><small>Best single hit</small><strong>'+fmt(bestHit.best)+' • '+bestHit.ratio.join("/")+'</strong></div>';
+  }).join("");
+}\nlet pendingSuggestion=null;
 function ratioKey(r){return r.join("/")}
 function nearbyRatios(base){
   const [s,b,r]=base;
@@ -138,4 +167,4 @@ $("applySuggestion").onclick=()=>{
   updateRatio();
   window.scrollTo({top:0,behavior:"smooth"});
 };
-updateRatio();updateStats();render();
+loadProfile();updateRatio();updateStats();render();
