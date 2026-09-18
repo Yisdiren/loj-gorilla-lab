@@ -106,3 +106,5 @@ footer{text-align:center;color:#65809e;font-size:.78rem;padding-top:6px}
 .data-health{margin-top:10px;padding:12px;border:1px solid var(--line);border-radius:12px;color:var(--muted)}.data-health strong{color:var(--accent)}
 
 .quality-warnings{margin-top:8px;color:var(--muted);font-size:.8rem}.quality-warnings span{display:block;margin-top:3px}
+
+.gorilla-progress{display:grid;gap:6px;margin-top:10px}.progress-row{display:grid;grid-template-columns:130px 1fr 42px;gap:8px;align-items:center;font-size:.75rem}.progress-track{height:7px;background:#081321;border-radius:99px;overflow:hidden}.progress-fill{height:100%;background:currentColor}
