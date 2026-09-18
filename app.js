@@ -205,6 +205,9 @@ function renderControlledCompare(data){
   if(latest.capacity!==prev.capacity)changes.push("capacity");
   const cls=delta>=0?"compare-positive":"compare-negative";
   box.innerHTML='<div class="compare-cell"><small>Previous</small><strong>'+fmt(prev.average)+'</strong></div><div class="compare-cell"><small>Latest</small><strong>'+fmt(latest.average)+'</strong></div><div class="compare-cell"><small>Average change</small><strong class="'+cls+'">'+(delta>=0?"+":"")+fmt(delta)+' ('+(pct>=0?"+":"")+pct.toFixed(2)+'%)</strong></div><div class="compare-cell"><small>Detected changes</small><strong>'+(changes.join(", ")||latest.changeType||"none")+'</strong></div>';
+  const grade=$("controlGrade");
+  const n=changes.length;
+  grade.innerHTML=n===0?'<strong>Control:</strong> No setup variables changed — useful repeatability test.':n===1?'<strong>Clean controlled test:</strong> One detected setup variable changed.':n===2?'<strong>Mixed test:</strong> Two setup variables changed; attribution is less certain.':'<strong>Confounded test:</strong> '+n+' setup variables changed. Test one variable at a time when possible.';
 }
 function renderTopRatios(data){
   const box=$("topRatios"); if(!box)return;
