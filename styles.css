@@ -86,3 +86,5 @@ footer{text-align:center;color:#65809e;font-size:.78rem;padding-top:6px}
 .confidence-note{margin-top:10px;color:var(--muted);font-size:.82rem}
 
 .experiment-controls{display:flex;gap:8px;margin-top:8px}.experiment-controls button{flex:1}
+
+.coverage-summary{margin-top:12px;padding:12px;border:1px solid var(--line);border-radius:12px;color:var(--muted)}
