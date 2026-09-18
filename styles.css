@@ -47,3 +47,12 @@ footer{text-align:center;color:#65809e;font-size:.78rem;padding-top:6px}
 .history-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
 .history-actions select{width:auto;min-width:145px;padding:9px 10px}
 .import-label{display:inline-flex;flex-direction:row;align-items:center;cursor:pointer;font-size:.82rem}
+
+.muted{color:var(--muted);font-size:.85rem}
+.leaderboard{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.leader-card{background:#081321;border:1px solid var(--line);border-radius:13px;padding:13px}
+.leader-card h3{margin:0 0 8px;color:var(--text)}
+.leader-card small{display:block;color:var(--muted)}
+.leader-card strong{display:block;margin-top:2px}
+@media(max-width:820px){.leaderboard{grid-template-columns:1fr 1fr}}
+@media(max-width:520px){.leaderboard{grid-template-columns:1fr}}
