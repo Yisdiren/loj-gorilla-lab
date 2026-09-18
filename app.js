@@ -194,7 +194,7 @@ function saveProfile(){
 }
 ["server","player","capacity"].forEach(id=>$(id).addEventListener("change",saveProfile));
 function renderControlledCompare(data){
-  const box=$("controlledCompare");if(!box)return;
+  const box=$("controlledCompare");if(!box)return;const ri0=$("robotImpact");if(ri0)ri0.style.display="block";
   const selected=$("gorilla").value,rows=data.filter(x=>x.gorilla===selected).sort((a,b)=>new Date(b.created)-new Date(a.created));
   if(rows.length<2){box.innerHTML='<div class="empty">Save at least two tests for '+selected+' to compare them.</div>';return}
   const latest=rows[0],prev=rows[1],delta=latest.average-prev.average,pct=prev.average?delta/prev.average*100:0;
@@ -208,6 +208,7 @@ function renderControlledCompare(data){
   const rep=$("repeatability");if(rep){const same=rows.filter(x=>ratioKey(x.ratio)===ratioKey(latest.ratio));if(same.length>=2){const avgs=same.map(x=>x.average),mean=avgs.reduce((a,b)=>a+b,0)/avgs.length,range=Math.max(...avgs)-Math.min(...avgs);rep.textContent="Repeatability for "+ratioKey(latest.ratio)+": "+same.length+" tests • average range "+fmt(range)+" • "+(mean?((range/mean)*100).toFixed(1):"0.0")+"% of mean.";}else rep.textContent="Repeat this ratio to measure repeatability.";}
   const hi=$("heroImpact");if(hi){if(latest.changeType==="hero"||changes.includes("heroes"))hi.innerHTML="<strong>Hero experiment:</strong> "+(latest.changeDetails||"Hero lineup changed")+" • average "+(delta>=0?"+":"")+fmt(delta)+" vs previous test.";else hi.textContent="No hero-specific change detected in the latest comparison.";}
   const wi=$("warSkillImpact");if(wi){if(latest.changeType==="war-skill")wi.innerHTML="<strong>War-skill experiment:</strong> "+(latest.changeDetails||"War skill changed")+" • average "+(delta>=0?"+":"")+fmt(delta)+" ("+(pct>=0?"+":"")+pct.toFixed(2)+"%).";else wi.textContent="No war-skill upgrade tagged in the latest comparison.";}
+  const ri=$("robotImpact");if(ri){if(robotGorillas.has(selected)){if(latest.changeType==="robot"||changes.includes("robots"))ri.innerHTML="<strong>Robot experiment:</strong> "+(latest.changeDetails||"Robot setup changed")+" • average "+(delta>=0?"+":"")+fmt(delta)+".";else ri.textContent="Cyber/Warlord supports robot comparison; no robot change detected in the latest test.";}else ri.style.display="none";}
   const grade=$("controlGrade");
   const n=changes.length;
   grade.innerHTML=n===0?'<strong>Control:</strong> No setup variables changed — useful repeatability test.':n===1?'<strong>Clean controlled test:</strong> One detected setup variable changed.':n===2?'<strong>Mixed test:</strong> Two setup variables changed; attribution is less certain.':'<strong>Confounded test:</strong> '+n+' setup variables changed. Test one variable at a time when possible.';
