@@ -96,3 +96,5 @@ footer{text-align:center;color:#65809e;font-size:.78rem;padding-top:6px}
 .milestones{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.milestone{border:1px solid var(--line);border-radius:999px;padding:6px 10px;font-size:.75rem;color:var(--muted)}.milestone.done{color:var(--accent2);border-color:#315f54}
 
 .ratio-gap{margin-top:8px;padding:10px;background:#081321;border-radius:10px;color:var(--muted);font-size:.82rem}
+
+.load-leader{margin-top:8px;width:100%}
