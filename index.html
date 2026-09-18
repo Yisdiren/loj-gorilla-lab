@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#0b1220" />
+  <title>LoJ Gorilla Lab</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="shell">
+    <header class="hero">
+      <div>
+        <p class="eyebrow">LANDS OF JAIL • ACCOUNT-SPECIFIC TESTING</p>
+        <h1>LoJ Gorilla Lab</h1>
+        <p class="subtitle">Test formations. Log all five hits. Find what actually works for your account.</p>
+      </div>
+      <div class="badge">Beta v0.1</div>
+    </header>
+
+    <section class="grid two">
+      <article class="card">
+        <h2>Test Setup</h2>
+        <div class="form-grid">
+          <label>Gorilla
+            <select id="gorilla">
+              <option>Space Gorilla</option>
+              <option>Wise Gorilla</option>
+              <option>Primal Gorilla</option>
+              <option>Cyber Gorilla</option>
+              <option>Armed Gorilla</option>
+              <option>Gorilla Warlord</option>
+            </select>
+          </label>
+          <label>Server
+            <input id="server" inputmode="numeric" placeholder="e.g. 260" />
+          </label>
+          <label>Player
+            <input id="player" placeholder="e.g. Stiletto" />
+          </label>
+          <label>March Capacity
+            <input id="capacity" type="number" min="1" step="1" placeholder="188662" />
+          </label>
+        </div>
+
+        <h3>Formation Ratio</h3>
+        <div class="ratio-row">
+          <label>Shield %
+            <input id="shield" type="number" min="0" max="100" value="0" />
+          </label>
+          <label>Bomber %
+            <input id="bomber" type="number" min="0" max="100" value="10" />
+          </label>
+          <label>Shooter %
+            <input id="shooter" type="number" min="0" max="100" value="90" />
+          </label>
+        </div>
+        <div id="ratioStatus" class="status good">Ratio total: 100%</div>
+        <div id="troopBreakdown" class="breakdown">Enter march capacity to calculate troop counts.</div>
+
+        <h3>Heroes & Robots</h3>
+        <div class="form-grid">
+          <label>Hero 1<input id="hero1" placeholder="Hero name" /></label>
+          <label>Hero 2<input id="hero2" placeholder="Hero name" /></label>
+          <label>Hero 3<input id="hero3" placeholder="Hero name" /></label>
+          <label>Robot 1<input id="robot1" placeholder="Robot name" /></label>
+          <label>Robot 2<input id="robot2" placeholder="Robot name" /></label>
+        </div>
+      </article>
+
+      <article class="card">
+        <h2>Five-Hit Test</h2>
+        <div id="hits" class="hits"></div>
+        <div class="stats">
+          <div><span>Best</span><strong id="best">—</strong></div>
+          <div><span>Average</span><strong id="average">—</strong></div>
+          <div><span>Total</span><strong id="total">—</strong></div>
+        </div>
+        <label class="notes">Notes
+          <textarea id="notes" rows="4" placeholder="War skill upgrades, hero swaps, robot changes, observations..."></textarea>
+        </label>
+        <button id="saveTest" class="primary">Save Test</button>
+      </article>
+    </section>
+
+    <section class="card">
+      <div class="section-head">
+        <div>
+          <h2>Experiment History</h2>
+          <p>Saved locally in this browser for Beta v0.1.</p>
+        </div>
+        <button id="clearAll" class="danger ghost">Clear History</button>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Gorilla</th>
+              <th>Ratio</th>
+              <th>Best</th>
+              <th>Average</th>
+              <th>Hits</th>
+              <th>Heroes</th>
+              <th>Robots</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="historyBody"></tbody>
+        </table>
+      </div>
+      <div id="emptyState" class="empty">No tests saved yet.</div>
+    </section>
+
+    <section class="card best-card">
+      <h2>Best Known Setup</h2>
+      <div id="bestKnown">Save at least one completed test to establish a baseline.</div>
+    </section>
+
+    <footer>LoJ Gorilla Lab • Created for community testing by Stiletto</footer>
+  </main>
+  <script src="app.js"></script>
+</body>
+</html>
