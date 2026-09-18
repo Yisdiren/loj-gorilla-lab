@@ -2,7 +2,7 @@
 
 A browser-based testing lab for **Lands of Jail** Gorilla formations.
 
-## Beta v0.7
+## Beta v0.8
 - Select Gorilla type
 - Enter account/server and march capacity
 - Build Shield/Bomber/Shooter ratios
@@ -42,3 +42,8 @@ Created for community testing by **Stiletto**.
 - Adds Load Personal Best for the selected Gorilla
 - Adds CSV export for spreadsheet analysis
 - Keeps JSON backup/export support for full-fidelity data migration
+
+- Adds Top Tested Ratios for the selected Gorilla
+- Groups repeated runs of the same ratio together
+- Ranks ratios by mean test average, then best single hit
+- Shows how many saved tests support each ranked ratio
