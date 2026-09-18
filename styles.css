@@ -90,3 +90,5 @@ footer{text-align:center;color:#65809e;font-size:.78rem;padding-top:6px}
 .coverage-summary{margin-top:12px;padding:12px;border:1px solid var(--line);border-radius:12px;color:var(--muted)}
 
 .next-priority{margin-top:8px;padding:12px;background:#081321;border:1px solid var(--line);border-radius:12px}.next-priority strong{color:var(--accent)}
+
+.repeatability{margin-top:8px;color:var(--muted);font-size:.82rem}
