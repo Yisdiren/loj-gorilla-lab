@@ -27,6 +27,14 @@ function updateRatio(){
 [1,2,3,4,5].forEach(i=>$("hit"+i).addEventListener("input",updateStats));
 
 const key="loj-gorilla-lab-tests-v1";
+const referenceBaselines={
+  "Space Gorilla":{ratio:[0,4,96],label:"Stiletto test reference"},
+  "Wise Gorilla":{ratio:[0,9,91],label:"Stiletto test reference"},
+  "Primal Gorilla":{ratio:[0,29,71],label:"Stiletto test reference"},
+  "Cyber Gorilla":{ratio:[0,10,90],label:"Stiletto test reference"},
+  "Armed Gorilla":{ratio:[0,4,96],label:"Stiletto test reference"},
+  "Gorilla Warlord":{ratio:[0,35,65],label:"Historical Stiletto test reference"}
+};
 const read=()=>JSON.parse(localStorage.getItem(key)||"[]");
 const write=x=>localStorage.setItem(key,JSON.stringify(x));
 function testFromForm(){
@@ -68,4 +76,4 @@ function renderBest(data){
   </div>`;
 }
 $("clearAll").onclick=()=>{if(confirm("Clear all saved Gorilla Lab tests from this browser?")){localStorage.removeItem(key);render()}};
-updateRatio();updateStats();render();
+$("gorilla").addEventListener("change",()=>renderBest(read()));\nupdateRatio();updateStats();render();
