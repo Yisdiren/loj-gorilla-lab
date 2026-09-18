@@ -175,7 +175,7 @@ $("importData").addEventListener("change",async e=>{
   e.target.value="";
 });
 $("clearAll").onclick=()=>{if(confirm("Clear all saved Gorilla Lab tests from this browser?")){localStorage.removeItem(key);render()}};
-$("gorilla").addEventListener("change",()=>{syncRobotFields();renderBest(read());renderExperiment(read());renderTopRatios(read());updateStats();if($("historyFilter").value==="selected")render()});
+$("gorilla").addEventListener("change",()=>{syncRobotFields();renderBest(read());renderExperiment(read());renderTopRatios(read());renderControlledCompare(read());updateStats();if($("historyFilter").value==="selected")render()});
 function loadProfile(){
   try{
     const p=JSON.parse(localStorage.getItem(profileKey)||"{}");
@@ -193,6 +193,19 @@ function saveProfile(){
   }));
 }
 ["server","player","capacity"].forEach(id=>$(id).addEventListener("change",saveProfile));
+function renderControlledCompare(data){
+  const box=$("controlledCompare");if(!box)return;
+  const selected=$("gorilla").value,rows=data.filter(x=>x.gorilla===selected).sort((a,b)=>new Date(b.created)-new Date(a.created));
+  if(rows.length<2){box.innerHTML='<div class="empty">Save at least two tests for '+selected+' to compare them.</div>';return}
+  const latest=rows[0],prev=rows[1],delta=latest.average-prev.average,pct=prev.average?delta/prev.average*100:0;
+  const changes=[];
+  if(ratioKey(latest.ratio)!==ratioKey(prev.ratio))changes.push("ratio");
+  if(JSON.stringify(latest.heroes||[])!==JSON.stringify(prev.heroes||[]))changes.push("heroes");
+  if(JSON.stringify(latest.robots||[])!==JSON.stringify(prev.robots||[]))changes.push("robots");
+  if(latest.capacity!==prev.capacity)changes.push("capacity");
+  const cls=delta>=0?"compare-positive":"compare-negative";
+  box.innerHTML='<div class="compare-cell"><small>Previous</small><strong>'+fmt(prev.average)+'</strong></div><div class="compare-cell"><small>Latest</small><strong>'+fmt(latest.average)+'</strong></div><div class="compare-cell"><small>Average change</small><strong class="'+cls+'">'+(delta>=0?"+":"")+fmt(delta)+' ('+(pct>=0?"+":"")+pct.toFixed(2)+'%)</strong></div><div class="compare-cell"><small>Detected changes</small><strong>'+(changes.join(", ")||latest.changeType||"none")+'</strong></div>';
+}
 function renderTopRatios(data){
   const box=$("topRatios"); if(!box)return;
   const selected=$("gorilla").value;
