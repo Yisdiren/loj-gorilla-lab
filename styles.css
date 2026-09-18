@@ -76,3 +76,5 @@ footer{text-align:center;color:#65809e;font-size:.78rem;padding-top:6px}
 
 .robot-fields{display:contents}
 .robot-disabled-note{grid-column:1/-1;color:var(--muted);font-size:.8rem}
+
+.change-grid{display:grid;grid-template-columns:1fr 1.4fr;gap:10px;margin:12px 0}.change-tag{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:3px 7px;font-size:.7rem;white-space:nowrap}@media(max-width:620px){.change-grid{grid-template-columns:1fr}}
