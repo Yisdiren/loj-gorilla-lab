@@ -240,6 +240,7 @@ function renderLeaderboard(data){
   }).join("");
   const tested=gorillas.filter(g=>data.some(x=>x.gorilla===g)).length,total=data.length,complete=data.filter(x=>(x.hits||[]).length===5).length;
   const cov=$("coverageSummary");if(cov)cov.innerHTML="<strong>"+tested+"/6 Gorillas tested</strong> • "+total+" total experiments • "+complete+" complete five-hit sets.";
+  const priority=$("nextPriority");if(priority){const counts=gorillas.map(g=>({g,n:data.filter(x=>x.gorilla===g&&(x.hits||[]).length===5).length})).sort((a,b)=>a.n-b.n);const p=counts[0];priority.innerHTML="<small>Suggested testing priority</small><br><strong>"+p.g+"</strong> — "+p.n+" complete five-hit set"+(p.n===1?"":"s")+". Build evidence here next.";}
 }\nlet pendingSuggestion=null;const skippedKey="loj-gorilla-lab-skipped-v1";function skipped(){try{return JSON.parse(localStorage.getItem(skippedKey)||"{}")}catch{return {}}}function saveSkipped(x){localStorage.setItem(skippedKey,JSON.stringify(x))}
 function ratioKey(r){return r.join("/")}
 function nearbyRatios(base){
