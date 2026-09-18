@@ -164,7 +164,7 @@ $("importData").addEventListener("change",async e=>{
   e.target.value="";
 });
 $("clearAll").onclick=()=>{if(confirm("Clear all saved Gorilla Lab tests from this browser?")){localStorage.removeItem(key);render()}};
-$("gorilla").addEventListener("change",()=>{renderBest(read());renderExperiment(read());updateStats();if($("historyFilter").value==="selected")render()});
+$("gorilla").addEventListener("change",()=>{renderBest(read());renderExperiment(read());renderTopRatios(read());updateStats();if($("historyFilter").value==="selected")render()});
 function loadProfile(){
   try{
     const p=JSON.parse(localStorage.getItem(profileKey)||"{}");
@@ -182,6 +182,24 @@ function saveProfile(){
   }));
 }
 ["server","player","capacity"].forEach(id=>$(id).addEventListener("change",saveProfile));
+function renderTopRatios(data){
+  const box=$("topRatios"); if(!box)return;
+  const selected=$("gorilla").value;
+  const rows=data.filter(x=>x.gorilla===selected);
+  if(!rows.length){box.innerHTML='<div class="empty">No saved tests for '+selected+' yet.</div>';return}
+  const grouped=new Map();
+  for(const t of rows){
+    const key=ratioKey(t.ratio);
+    if(!grouped.has(key))grouped.set(key,[]);
+    grouped.get(key).push(t);
+  }
+  const ranked=[...grouped.entries()].map(([ratio,tests])=>{
+    const avgOfAvgs=Math.round(tests.reduce((s,t)=>s+t.average,0)/tests.length);
+    const best=Math.max(...tests.map(t=>t.best));
+    return {ratio,tests:tests.length,average:avgOfAvgs,best};
+  }).sort((a,b)=>b.average-a.average||b.best-a.best).slice(0,3);
+  box.innerHTML=ranked.map((x,i)=>'<div class="ratio-rank"><div class="rank">#'+(i+1)+' • '+x.tests+' test'+(x.tests===1?'':'s')+'</div><div class="ratio">'+x.ratio+'</div><small>Mean test average</small><strong>'+fmt(x.average)+'</strong><small>Best single hit</small><strong>'+fmt(x.best)+'</strong></div>').join("");
+}
 function renderLeaderboard(data){
   const box=$("leaderboard"); if(!box)return;
   const gorillas=[...$("gorilla").options].map(o=>o.value);
