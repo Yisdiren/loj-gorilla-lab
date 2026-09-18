@@ -1,0 +1,18 @@
+# LoJ Gorilla Lab
+
+A browser-based testing lab for **Lands of Jail** Gorilla formations.
+
+## Beta v0.1
+- Select Gorilla type
+- Enter account/server and march capacity
+- Build Shield/Bomber/Shooter ratios
+- Automatic troop-count calculation
+- Record heroes and robots
+- Log up to five damage hits
+- Automatic best, average, and total damage
+- Save experiment history in browser local storage
+- Track the highest recorded setup
+
+This project is designed to stay account-specific: the goal is to help each player discover what performs best on their own account rather than assume one universal formation.
+
+Created for community testing by **Stiletto**.
