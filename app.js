@@ -225,7 +225,8 @@ function renderTopRatios(data){
     const best=Math.max(...tests.map(t=>t.best));
     return {ratio,tests:tests.length,average:avgOfAvgs,best};
   }).sort((a,b)=>b.average-a.average||b.best-a.best).slice(0,3);
-  box.innerHTML=ranked.map((x,i)=>'<div class="ratio-rank"><div class="rank">#'+(i+1)+' • '+x.tests+' test'+(x.tests===1?'':'s')+'</div><div class="ratio">'+x.ratio+'</div><small>Mean test average</small><strong>'+fmt(x.average)+'</strong><small>Best single hit</small><strong>'+fmt(x.best)+'</strong></div>').join("");
+  box.innerHTML=ranked.map((x,i)=>'<div class="ratio-rank"><div class="rank">#'+(i+1)+' • '+x.tests+' test'+(x.tests===1?'':'s')+'</div><div class="ratio">'+x.ratio+'</div><small>Mean test average</small><strong>'+fmt(x.average)+'</strong><small>Best single hit</small><strong>'+fmt(x.best)+'</strong><small>Evidence</small><strong>'+(x.tests>=5?'Strong':x.tests>=3?'Building':'Early')+'</strong></div>').join("");
+  const note=$("confidenceNote");if(note){const lead=ranked[0];note.textContent=lead.tests>=5?"Leading ratio has 5+ saved tests. Confidence is stronger, but account changes can still shift results.":"Leading ratio has only "+lead.tests+" saved test"+(lead.tests===1?"":"s")+". Repeat it before treating it as established.";}
 }
 function renderLeaderboard(data){
   const box=$("leaderboard"); if(!box)return;
