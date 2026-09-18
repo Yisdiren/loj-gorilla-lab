@@ -2,7 +2,7 @@
 
 A browser-based testing lab for **Lands of Jail** Gorilla formations.
 
-## Beta v0.6
+## Beta v0.7
 - Select Gorilla type
 - Enter account/server and march capacity
 - Build Shield/Bomber/Shooter ratios
@@ -37,3 +37,8 @@ Created for community testing by **Stiletto**.
 - Shows hit spread as both damage and percentage of average
 - Compares the current test average against the selected Gorilla's personal best
 - Rewards complete, consistent five-hit tests with a stronger quality state
+
+- Adds New 5-Hit Set to clear hit results while keeping the active setup
+- Adds Load Personal Best for the selected Gorilla
+- Adds CSV export for spreadsheet analysis
+- Keeps JSON backup/export support for full-fidelity data migration
