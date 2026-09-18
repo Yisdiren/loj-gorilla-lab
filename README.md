@@ -2,7 +2,7 @@
 
 A browser-based testing lab for **Lands of Jail** Gorilla formations.
 
-## Beta v0.23
+## Beta v0.24
 - Select Gorilla type
 - Enter account/server and march capacity
 - Build Shield/Bomber/Shooter ratios
@@ -101,3 +101,6 @@ Created for community testing by **Stiletto**.
 
 - Adds robot-impact analysis exclusively for Cyber Gorilla and Gorilla Warlord
 - Robot comparison stays hidden for Space, Wise, Primal, and Armed Gorilla
+
+- Adds experiment-type breakdown across the account dataset
+- Counts ratio, hero, robot, war-skill, mixed, and baseline experiments separately
