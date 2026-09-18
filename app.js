@@ -1,3 +1,15 @@
+const stilettoGorillaData=[
+ {gorilla:"Space Gorilla",ratio:[0,4,96],note:"Best known Stiletto test ratio"},
+ {gorilla:"Wise Gorilla",ratio:[0,9,91],note:"Ratio used across the five-hit test"},
+ {gorilla:"Primal Gorilla",ratio:[0,29,71],note:"Beat the tested 0/30/70 ratio"},
+ {gorilla:"Cyber Gorilla",ratio:[0,10,90],note:"Robot-eligible; tested during Musashimaru progression"},
+ {gorilla:"Armed Gorilla",ratio:[0,4,96],best:349348449,alternate:{ratio:[0,2,98],best:322504797},note:"0/4/96 best known; 0/2/98 comparison recorded"},
+ {gorilla:"Gorilla Warlord",ratio:[0,35,65],tested:[[0,9,91],[0,35,65],[0,34,66],[0,30,70],[0,33,67]],note:"Robot-eligible; historical reference plus recent ratio sweep"}
+];
+function renderStilettoSeed(){
+ const box=$("stilettoSeed");if(!box)return;
+ box.innerHTML=stilettoGorillaData.map(x=>'<div class="seed-item"><small>'+x.gorilla+'</small><strong>'+ratioKey(x.ratio)+'</strong>'+(x.best?'<div>'+fmt(x.best)+' best hit</div>':'')+(x.alternate?'<div class="record">Comparison '+ratioKey(x.alternate.ratio)+' • '+fmt(x.alternate.best)+'</div>':'')+(x.tested?'<div class="record">Tested: '+x.tested.map(r=>ratioKey(r)).join(", ")+'</div>':'')+'<div class="record">'+x.note+'</div></div>').join("");
+}
 const $=id=>document.getElementById(id);
 const hitWrap=$("hits");
 const robotGorillas=new Set(["Cyber Gorilla","Gorilla Warlord"]);
@@ -306,3 +318,6 @@ $("applySuggestion").onclick=()=>{
   window.scrollTo({top:0,behavior:"smooth"});
 };
 loadProfile();syncRobotFields();updateRatio();updateStats();render();
+
+$("loadStilettoProfile").onclick=()=>{$("server").value="260";$("player").value="Stiletto";$("capacity").value="188662";saveProfile();updateRatio();};
+renderStilettoSeed();
