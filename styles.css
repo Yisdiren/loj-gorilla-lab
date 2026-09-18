@@ -84,3 +84,5 @@ footer{text-align:center;color:#65809e;font-size:.78rem;padding-top:6px}
 .control-grade{margin-top:10px;padding:11px;border:1px solid var(--line);border-radius:12px;color:var(--muted)}.control-grade strong{color:var(--text)}
 
 .confidence-note{margin-top:10px;color:var(--muted);font-size:.82rem}
+
+.experiment-controls{display:flex;gap:8px;margin-top:8px}.experiment-controls button{flex:1}
