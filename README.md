@@ -2,7 +2,7 @@
 
 A browser-based testing lab for **Lands of Jail** Gorilla formations.
 
-## Beta v0.35
+## Beta v0.36
 - Select Gorilla type
 - Enter account/server and march capacity
 - Build Shield/Bomber/Shooter ratios
@@ -136,3 +136,6 @@ Created for community testing by **Stiletto**.
 
 ### Beta v0.35 — Duplicate-test awareness
 - Warns when the same Gorilla, ratio, heroes, and robots have prior tests.
+
+### Beta v0.36 — Robot guard expansion
+- Experiment Guard also checks robot drift for Cyber and Warlord.
